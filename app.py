@@ -33,4 +33,5 @@ def welcome():
     return jsonify({"message": "Welcome message from Flask backend!"})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Required for Render
+    app.run(debug=True, host="0.0.0.0", port=port)
