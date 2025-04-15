@@ -40,24 +40,52 @@ recognition.onresult = function (event) {
         speak("okay, so, seems like you chose help, that's nice. Now in order to get started with this app, choose any one of our two features: object detection or currency detection. Say 'currency' or spell it C, U, R, R, E, N, C, Y. For object detection say 'object' or O, B, J, E, C, T. You can also say 'contact' to go back. Speak now in 3, 2, 1.", () => {
             recognition.start();
         });
-    } else if (step === 5) {
-        if (transcript.includes("object")) {
-            step = 6;
-            speak("Opening object detection camera module now.", () => {
-                openCameraModule();
+     } else if (step === 5) {
+            if (transcript.includes("object")) {
+                step = 6;
+                speak("Opening object detection camera module now.", () => {
+                    openCameraModule();
+                });
+            } else if (transcript.includes("currency")) {
+                speak("Starting currency detection now.");
+            } else if (transcript.includes("contact")) {
+                step = 6;
+                speak("Okay, so we have email services. Whom would you like to send an email to? Please say the full email ID.", () => {
+                    recognition.start();
+                });
+            } else {
+                speak("Sorry, I didn't understand. Please try again.", () => recognition.start());
+            }
+        } else if (step === 6) {
+            // Get email ID
+            window.emailTo = transcript.replace(/\s+/g, ''); // remove spaces
+            step = 7;
+            speak("Got it. Now, what message would you like to send?", () => recognition.start());
+        } else if (step === 7) {
+            const message = transcript;
+            step = 8;
+            speak("Sending your email now...", () => {
+                // Call Flask to send email
+                fetch('/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ to: window.emailTo, message })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        speak("Email successfully sent!");
+                    } else {
+                        speak("Sorry, the email could not be sent.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Email error:", error);
+                    speak("There was an error sending the email.");
+                });
             });
-        } else if (transcript.includes("currency")) {
-            speak("Starting currency detection now.");
-        } else if (transcript.includes("contact")) {
-            speak("Redirecting you to contact section.");
-        } else {
-            speak("Sorry, I didn't understand. Please try again.", () => recognition.start());
         }
-    } else {
-        speak("Sorry, I didn't get that. Please try again.", () => recognition.start());
-    }
-};
-
+    };
 // Handle errors
 recognition.onerror = function (event) {
     console.error("Speech recognition error:", event.error);

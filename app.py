@@ -3,6 +3,9 @@ from flask_cors import CORS
 import subprocess
 import sys
 import os
+import smtplib
+from email.message import EmailMessage
+
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 CORS(app)  # Enable CORS to allow fetch from JS
@@ -27,6 +30,31 @@ def run_object_detection():
     except Exception as e:
         print("Error starting object detection:", e)
         return jsonify({"status": "error", "message": str(e)}), 500
+    
+@app.route("/send-email", methods=["POST"])
+def send_email():
+    data = request.get_json()
+    to_email = data.get("to")
+    message_body = data.get("message")
+
+    try:
+        # Setup email
+        msg = EmailMessage()
+        msg["Subject"] = "Message from Be My Sight Assistant"
+        msg["From"] = "saparyadey2019@gmail.com"  # Replace with your email
+        msg["To"] = to_email
+        msg.set_content(message_body)
+
+        # Send the email (example with Gmail SMTP)
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login("saparyadey2019@gmail.com", "ospk rkdz fceh voym")  # Use App Password if using Gmail
+            smtp.send_message(msg)
+
+        return jsonify({"status": "success", "message": "Email sent"})
+
+    except Exception as e:
+        print("Error sending email:", e)
+        return jsonify({"status": "error", "message": str(e)})
 
 @app.route("/welcome")
 def welcome():
