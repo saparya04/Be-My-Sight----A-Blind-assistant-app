@@ -1,3 +1,4 @@
 Flask
 opencv-python-headless
 pyttsx3
+flask_cors
