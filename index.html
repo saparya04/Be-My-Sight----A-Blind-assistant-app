@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blind Assistant</title>
     <link rel="stylesheet" href="styles.css">
-</head>
+</head>  
 <body>
     
     <!-- Navigation Bar Header -->
@@ -40,10 +39,18 @@
 
             <!-- Feature 2: Object Detection -->
             <div class="feature-box">
-                
                 <img src="object.jpg" alt="Object Detection">
                 <button>Object Detection</button>
             </div>
+        </section>
+
+        <!-- START Button for Voice Interaction -->
+        <section style="text-align: center; margin-top: 30px;">
+            <button id="startButton" style="padding: 12px 24px; font-size: 18px; background-color: #007BFF; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                Start Assistant
+            </button>
+            <p id="response" style="margin-top: 10px; font-weight: bold;"></p>
+            <div id="camera" style="margin-top: 20px; color: green; font-weight: bold;"></div>
         </section>
     </main>
 
@@ -57,10 +64,6 @@
     </footer>
 
     <script src="script.js"></script>
-    
-    
-    
-    
 </body>
 </html>
 
