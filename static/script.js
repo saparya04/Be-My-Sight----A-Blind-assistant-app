@@ -66,12 +66,23 @@ recognition.onerror = function (event) {
 
 // Open camera module
 function openCameraModule() {
-    // Add your logic here to open the camera module
-    // For demo, we'll just log it
-    console.log("Camera module opened!");
-    // You can also redirect or show the camera on screen here
-    document.getElementById("camera").innerText = "Camera Module Opened (Object Detection Started)";
+    console.log("Camera module triggered!");
+    document.getElementById("camera").innerText = "Launching object detection...";
+
+    fetch('/run-object-detection', {
+        method: 'POST'
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("Server response:", data);
+        document.getElementById("camera").innerText = data;
+    })
+    .catch(error => {
+        console.error("Error launching object detection:", error);
+        document.getElementById("camera").innerText = "Failed to start object detection.";
+    });
 }
+
 
 // Initialize the Assistant
 function initializeAssistant() {
