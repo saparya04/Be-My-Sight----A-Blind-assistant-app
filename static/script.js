@@ -47,7 +47,10 @@ recognition.onresult = function (event) {
                     openCameraModule();
                 });
             } else if (transcript.includes("currency")) {
-                speak("Starting currency detection now.");
+                step = 6;
+                speak("Starting currency detection now.", () => {
+                    openCurrencyModule();
+                });
             } else if (transcript.includes("contact")) {
                 step = 6;
                 speak("Okay, so we have email services. Whom would you like to send an email to? Please say the full email ID.", () => {
@@ -108,6 +111,24 @@ function openCameraModule() {
     .catch(error => {
         console.error("Error launching object detection:", error);
         document.getElementById("camera").innerText = "Failed to start object detection.";
+    });
+}
+// Open currency detection module
+function openCurrencyModule() {
+    console.log("Currency module triggered!");
+    document.getElementById("camera").innerText = "Launching currency detection...";
+
+    fetch('/run-currency-detection', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Currency detection server response:", data);
+        document.getElementById("camera").innerText = data.message;
+    })
+    .catch(error => {
+        console.error("Error launching currency detection:", error);
+        document.getElementById("camera").innerText = "Failed to start currency detection.";
     });
 }
 

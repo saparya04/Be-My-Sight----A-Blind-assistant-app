@@ -30,6 +30,23 @@ def run_object_detection():
     except Exception as e:
         print("Error starting object detection:", e)
         return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/run-currency-detection", methods=["POST"])
+def run_currency_detection():
+    try:
+        print("Trigger received for currency detection...")
+
+        python_cmd = "python3" if sys.platform != "win32" else "python"
+
+        process = subprocess.Popen([python_cmd, "detection.py"])
+        print(f"Currency detection started with PID: {process.pid}")
+
+        return jsonify({"status": "success", "message": "Currency detection started!"})
+
+    except Exception as e:
+        print("Error starting currency detection:", e)
+        return jsonify({"status": "error", "message": str(e)}), 500
+
     
 @app.route("/send-email", methods=["POST"])
 def send_email():
