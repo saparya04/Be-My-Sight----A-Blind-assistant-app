@@ -1,4 +1,4 @@
-# 🦯 BlindMate: Voice-Controlled Assistant for the Visually Impaired 🎙️  
+# 🦯 Be My SIght: Blind Assistant App for the Visually Impaired 🎙️  
 
 An AI-powered, fully voice-driven assistant designed to empower visually impaired individuals. BlindMate enables seamless voice-based registration, real-time object and currency recognition, and hands-free communication, leveraging machine learning and speech technologies.
 
